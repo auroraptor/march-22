@@ -1,0 +1,8 @@
+{
+    "watch": ["lib"],
+    "execMap": {
+      "ts": "node --loader ts-node/esm"
+    },
+    "watch": ["lib"],
+    "ext": "ts"
+  }
