@@ -38,6 +38,6 @@ npm run serve
 
 `GET http://YOUR_HOST:PORT/api/leads?query=example`
 
-=======
+##
 
 ⚠️ Пожалуйста, убедитесь, что вы заменили `YOUR_API_KEY`, `YOUR_SUBDOMAIN` и другие параметры на реальные данные для вашего аккаунта amoCRM в файле конфигурации.
