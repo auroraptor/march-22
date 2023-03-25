@@ -32,14 +32,10 @@ npm run serve
 
 Для получения сделок, отправьте GET-запрос на эндпоинт /api/leads.
 
-```bash
-GET http://localhost:3000/api/leads
-```
+`GET http://YOUR_HOST:PORT/api/leads`
 
 Для фильтрации сделок, добавьте GET-параметр query. 
 
-```bash
-GET http://localhost:3000/api/leads?query=example
-```
+`GET http://YOUR_HOST:PORT/api/leads?query=example`
 
 ⚠️ Пожалуйста, убедитесь, что вы заменили `YOUR_API_KEY`, `YOUR_SUBDOMAIN` и другие параметры на реальные данные для вашего аккаунта amoCRM в файле конфигурации.
