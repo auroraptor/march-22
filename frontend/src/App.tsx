@@ -26,8 +26,15 @@ const columns: ColumnsType<DataType> = [
   { title: 'Бюджет', dataIndex: 'price', key: 'price' },
 ];
 
-const field = fetchData('http://localhost:4040');
-console.log(field);
+fetchData('http://localhost:4040/')
+.then(response => {
+  console.log(response); // объект ответа (response object)
+  return response;
+})
+.catch(error => {
+  console.error(error);
+});
+
 
 const data: DataType[] = [
   {

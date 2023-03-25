@@ -7,10 +7,9 @@ export async function fetchData(endpoint: string, query?: string,): Promise<ApiR
 
   const response = await fetch(url, {
     method: "GET",
-    credentials: "include",
     headers: {
+      'Access-Control-Allow-Origin': 'http://localhost:3001',
       "Content-Type": "application/json",
-      // "Authorization": `Bearer ${token}`
     }
   });
 
