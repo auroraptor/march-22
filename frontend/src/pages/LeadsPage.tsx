@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Layout, Typography, message } from 'antd';
-import { ApiResponse, PipelinesApiResponse, Lead, Pipeline } from '../types';
+import { ApiResponse, PipelinesApiResponse, Lead, Pipeline, User, UserApiResponse } from '../types';
 import SearchBar from '../components/SearchBar';
 import LeadsTable from '../components/LeadsTable';
 
@@ -12,10 +12,12 @@ const { Title } = Typography;
 const LeadsPage: React.FC = () => {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [pipelines, setPipelines] = useState<Pipeline[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     fetchLeads();
     fetchPipelines();
+    fetchUsers();
   }, []);
 
   const fetchLeads = async (query?: string) => {
@@ -45,6 +47,16 @@ const LeadsPage: React.FC = () => {
     }
   };
 
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/users');
+      const data: UserApiResponse = await response.json();
+      setUsers(data._embedded.users);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header>
@@ -54,7 +66,7 @@ const LeadsPage: React.FC = () => {
       </Header>
       <Content style={{ padding: '24px' }}>
         <SearchBar onSearch={fetchLeads} />
-        <LeadsTable leads={leads} pipelines={pipelines} />
+        <LeadsTable leads={leads} pipelines={pipelines} users={users} />
       </Content>
     </Layout>
   );
