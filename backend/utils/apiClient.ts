@@ -1,3 +1,4 @@
+// backend/utils/apiClients
 import axios from 'axios';
 
 const YOUR_SUBDOMAIN = process.env.YOUR_SUBDOMAIN || 'test';
@@ -39,4 +40,20 @@ export const fetchUsers = async () => {
     console.error('Error fetching users:', error);
     throw error;
   }
+};
+
+export const fetchContacts = async (contactIds: number[]) => {
+  const contacts = [];
+
+  for (const contactId of contactIds) {
+    const response = await axios.get(`https://${YOUR_SUBDOMAIN}.amocrm.ru/api/v4/contacts/${contactId}`, {
+      headers: {
+        'Authorization': `Bearer ${YOUR_API_KEY}`,
+      },
+    });
+
+    contacts.push(response.data);
+  }
+
+  return contacts;
 };

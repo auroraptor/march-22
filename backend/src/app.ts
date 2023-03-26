@@ -1,7 +1,8 @@
+// backend/src/app.ts
 require('dotenv').config();
 import express from 'express';
 import cors from 'cors';
-import { fetchLeads, fetchPipelines } from '../utils/apiClient';
+import { fetchLeads, fetchPipelines, fetchContacts } from '../utils/apiClient';
 import { getUsers } from '../controllers/usersController';
 
 const app = express();
@@ -33,6 +34,22 @@ app.get('/api/leads/pipelines', async (_, res) => {
 });
 
 app.get('/api/users', getUsers);
+
+app.get('/contacts', async (req, res) => {
+  const { leadId } = req.query;
+  if (leadId) {
+    try {
+      const contactIds = JSON.parse(leadId as string);
+      const data = await fetchContacts(contactIds);
+      res.json(data);
+    } catch (error) {
+      console.error('Error fetching contacts:', error);
+      res.status(500).json({ error: 'Failed to fetch contacts' });
+    }
+  } else {
+    res.status(400).json({ error: 'Missing leadId query parameter' });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Слушаем на порту ${port}`);

@@ -6,6 +6,7 @@ export interface Lead {
   price: number;
   status_id: number;
   pipeline_id: number;
+  contact_ids: number[];
 }
 
 export interface Pipeline {

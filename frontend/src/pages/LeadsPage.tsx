@@ -5,6 +5,7 @@ import { Layout, Typography, message } from 'antd';
 import { ApiResponse, PipelinesApiResponse, Lead, Pipeline, User, UserApiResponse } from '../types';
 import SearchBar from '../components/SearchBar';
 import LeadsTable from '../components/LeadsTable';
+import { fetchLeads, fetchPipelines, fetchUsers } from '../api/api';
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
@@ -15,47 +16,10 @@ const LeadsPage: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
-    fetchLeads();
-    fetchPipelines();
-    fetchUsers();
+    fetchLeads().then((fetchedLeads) => setLeads(fetchedLeads));
+    fetchPipelines().then((fetchedPipelines) => setPipelines(fetchedPipelines));
+    fetchUsers().then((fetchedUsers) => setUsers(fetchedUsers));
   }, []);
-
-  const fetchLeads = async (query?: string) => {
-    if (query && query.length < 3) {
-      message.warning('Введите минимум 3 символа для поиска');
-      return;
-    }
-    try {
-      const url = query
-        ? `http://localhost:3000/api/leads?query=${query}`
-        : 'http://localhost:3000/api/leads';
-      const response = await fetch(url);
-      const data: ApiResponse = await response.json();
-      setLeads(data._embedded.leads);
-    } catch (error) {
-      console.error('Error fetching leads:', error);
-    }
-  };
-
-  const fetchPipelines = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/api/leads/pipelines');
-      const data: PipelinesApiResponse = await response.json();
-      setPipelines(data._embedded.pipelines);
-    } catch (error) {
-      console.error('Error fetching pipelines:', error);
-    }
-  };
-
-  const fetchUsers = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/api/users');
-      const data: UserApiResponse = await response.json();
-      setUsers(data._embedded.users);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
-  };
 
   return (
     <Layout style={{ minHeight: '100vh' }}>

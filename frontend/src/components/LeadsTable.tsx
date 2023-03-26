@@ -1,20 +1,36 @@
-// src/components/LeadsTable.tsx
-
-import React from "react";
+// frontend/src/components/LeadsTable.ts
+import React, { useState, useEffect } from "react";
 import { Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
-import { Lead, LeadsTableProps } from "../types";
+import { Lead, LeadsTableProps, Contact } from "../types";
+import { fetchLeads, fetchContactsByIds } from "../api/api";
+import ExpandedContactsRow from "./ExpandedContactsRow";
 
 const LeadsTable: React.FC<LeadsTableProps> = ({ leads, pipelines, users }) => {
+  const [contactsData, setContactsData] = useState<Map<number, Contact[]>>(
+    new Map()
+  );
+
   const getStatusName = (pipelineId: number, statusId: number) => {
     const pipeline = pipelines.find((p) => p.id === pipelineId);
     const status = pipeline?._embedded.statuses.find((s) => s.id === statusId);
     return status?.name || "";
   };
+
   const getResponsibleUser = (userId: number) => {
     const user = users.find((user) => user.id === userId);
     return user ? user.name : "Не назначен";
   };
+
+  const getContacts = async (leadId: number) => {
+    const lead = leads.find((lead) => lead.id === leadId);
+    if (!lead || !lead.contact_ids) {
+      return;
+    }
+    const contacts = await fetchContactsByIds(lead.contact_ids);
+    setContactsData((prevContactsData) => new Map(prevContactsData).set(leadId, contacts));
+  };
+  
 
   const columns: ColumnsType<Lead> = [
     {
@@ -55,7 +71,27 @@ const LeadsTable: React.FC<LeadsTableProps> = ({ leads, pipelines, users }) => {
     },
   ];
 
-  return <Table dataSource={leads} columns={columns} rowKey="id" />;
+  return (
+    <Table
+      dataSource={leads}
+      columns={columns}
+      rowKey="id"
+      expandable={{
+        expandedRowRender: (record) => {
+          const contacts = contactsData.get(record.id) || [];
+          return <ExpandedContactsRow contacts={contacts} />;
+        },
+        onExpand: async (expanded, record) => {
+          if (expanded) {
+            const contacts = contactsData.get(record.id);
+            if (!contacts) {
+              await getContacts(record.id);
+            }
+          }
+        },
+      }}
+    />
+  );
 };
 
 export default LeadsTable;
