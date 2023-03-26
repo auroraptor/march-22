@@ -6,7 +6,6 @@ export interface Lead {
   price: number;
   status_id: number;
   pipeline_id: number;
-  contact_ids: number[];
 }
 
 export interface Pipeline {
@@ -31,14 +30,14 @@ export interface User {
   rights: any;
 }
 
-export type Contact = {
+export interface Contact {
   id: number;
   name: string;
   phone: string;
   email: string;
-  avatar: string;
-  leads: number[];
-};
+  avatar?: string;
+}
+
 
 export interface LeadsTableProps {
   leads: Lead[];

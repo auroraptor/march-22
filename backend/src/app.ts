@@ -35,19 +35,20 @@ app.get('/api/leads/pipelines', async (_, res) => {
 
 app.get('/api/users', getUsers);
 
-app.get('/contacts', async (req, res) => {
-  const { leadId } = req.query;
-  if (leadId) {
-    try {
-      const contactIds = JSON.parse(leadId as string);
-      const data = await fetchContacts(contactIds);
-      res.json(data);
-    } catch (error) {
-      console.error('Error fetching contacts:', error);
-      res.status(500).json({ error: 'Failed to fetch contacts' });
-    }
-  } else {
-    res.status(400).json({ error: 'Missing leadId query parameter' });
+app.get('/api/contacts', async (req, res) => {
+  const leadId = Number(req.query.leadId);
+
+  if (!leadId) {
+    res.status(400).send('Необходимо указать параметр leadId');
+    return;
+  }
+
+  try {
+    const data = await fetchContacts(leadId);
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Произошла ошибка при обработке запроса');
   }
 });
 

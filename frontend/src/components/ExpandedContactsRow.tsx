@@ -20,7 +20,7 @@ const ExpandedContactsRow: React.FC<ExpandedContactsRowProps> = ({ contacts }) =
             style={{ marginRight: "0.5rem" }}
           />
           {contact.name}
-          {contact.phone && (
+          {(
             <Button
               icon={<PhoneOutlined />}
               type="link"
@@ -30,7 +30,7 @@ const ExpandedContactsRow: React.FC<ExpandedContactsRowProps> = ({ contacts }) =
               {contact.phone}
             </Button>
           )}
-          {contact.email && (
+          {(
             <Button
               icon={<MailOutlined />}
               type="link"

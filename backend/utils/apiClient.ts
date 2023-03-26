@@ -42,18 +42,12 @@ export const fetchUsers = async () => {
   }
 };
 
-export const fetchContacts = async (contactIds: number[]) => {
-  const contacts = [];
+export const fetchContacts = async (leadId: number) => {
+  const response = await axios.get(`https://${YOUR_SUBDOMAIN}.amocrm.ru/api/v4/contacts?with=leads`, {
+    headers: {
+      'Authorization': `Bearer ${YOUR_API_KEY}`,
+    },
+  });
 
-  for (const contactId of contactIds) {
-    const response = await axios.get(`https://${YOUR_SUBDOMAIN}.amocrm.ru/api/v4/contacts/${contactId}`, {
-      headers: {
-        'Authorization': `Bearer ${YOUR_API_KEY}`,
-      },
-    });
-
-    contacts.push(response.data);
-  }
-
-  return contacts;
+  return response.data;
 };
