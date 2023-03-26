@@ -25,8 +25,6 @@ app.get('/api/leads', async (req, res) => {
           'Authorization': `Bearer ${YOUR_API_KEY}`
         }
       });
-
-      console.log(response.data);
   
       res.json(response.data);
     } catch (error) {
