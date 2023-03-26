@@ -2,6 +2,7 @@ require('dotenv').config();
 import express from 'express';
 import cors from 'cors';
 import { fetchLeads, fetchPipelines } from '../utils/apiClient';
+import { getUsers } from '../controllers/usersController';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -30,6 +31,8 @@ app.get('/api/leads/pipelines', async (_, res) => {
     res.status(500).send('Произошла ошибка при обработке запроса');
   }
 });
+
+app.get('/api/users', getUsers);
 
 app.listen(port, () => {
   console.log(`Слушаем на порту ${port}`);

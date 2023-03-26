@@ -25,3 +25,18 @@ export const fetchPipelines = async () => {
 
   return response.data;
 };
+
+export const fetchUsers = async () => {
+  try {
+    const response = await axios.get(`https://${YOUR_SUBDOMAIN}.amocrm.ru/api/v4/users`, {
+      headers: {
+        'Authorization': `Bearer ${YOUR_API_KEY}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    throw error;
+  }
+};
