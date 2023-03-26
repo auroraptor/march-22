@@ -1,5 +1,5 @@
+@import '~antd/dist/antd.css';
+
 .App {
-  min-height: 100vh;
-  padding: 50px;
-  background-color: ghostwhite;
+  text-align: center;
 }
