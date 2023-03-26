@@ -30,6 +30,15 @@ export interface User {
   rights: any;
 }
 
+export type Contact = {
+  id: number;
+  name: string;
+  phone: string;
+  email: string;
+  avatar: string;
+  leads: number[];
+};
+
 export interface LeadsTableProps {
   leads: Lead[];
   pipelines: Pipeline[];
