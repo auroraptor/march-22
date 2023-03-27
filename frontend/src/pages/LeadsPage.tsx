@@ -31,7 +31,8 @@ const LeadsPage: React.FC = () => {
         : 'http://localhost:3000/api/leads';
       const response = await fetch(url);
       const data: ApiResponse = await response.json();
-      setLeads(data._embedded.leads);
+      if (typeof data === 'string') message.warning('Ничего не нашлось');
+      setLeads(typeof data === 'object' ? data._embedded.leads : []);
     } catch (error) {
       console.error('Error fetching leads:', error);
     }

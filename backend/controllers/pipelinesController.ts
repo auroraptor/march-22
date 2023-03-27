@@ -8,6 +8,6 @@ export const getPipelines = async (req: Request, res: Response) => {
     res.json(pipelines);
   } catch (error) {
     console.error('Error fetching pipelines:', error);
-    res.status(500).json({ error: 'An error occurred while fetching pipelines' });
+    res.status(500).send("Произошла ошибка при обработке запроса");
   }
 };
