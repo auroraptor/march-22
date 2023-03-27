@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Layout, Typography, message } from 'antd';
-import { ApiResponse, PipelinesApiResponse, Lead, Pipeline, User, UserApiResponse } from '../types';
+import { Lead, Pipeline, User,} from '../types';
+import { getLeads, getPipelines, getUsers } from '../api/api';
 import SearchBar from '../components/SearchBar';
 import LeadsTable from '../components/LeadsTable';
 
@@ -20,19 +21,15 @@ const LeadsPage: React.FC = () => {
     fetchUsers();
   }, []);
 
-  const fetchLeads = async (query?: string) => {
+   const fetchLeads = async (query?: string) => {
     if (query && query.length < 3) {
       message.warning('Введите минимум 3 символа для поиска');
       return;
     }
     try {
-      const url = query
-        ? `http://localhost:3000/api/leads?query=${query}`
-        : 'http://localhost:3000/api/leads';
-      const response = await fetch(url);
-      const data: ApiResponse = await response.json();
-      if (typeof data === 'string') message.warning('Ничего не нашлось');
-      setLeads(typeof data === 'object' ? data._embedded.leads : []);
+      const leads: Lead[] = await getLeads(query);
+      if (!leads.length) message.warning('Ничего не нашлось');
+      setLeads(leads);
     } catch (error) {
       console.error('Error fetching leads:', error);
     }
@@ -40,9 +37,8 @@ const LeadsPage: React.FC = () => {
 
   const fetchPipelines = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/leads/pipelines');
-      const data: PipelinesApiResponse = await response.json();
-      setPipelines(data._embedded.pipelines);
+      const pipelines: Pipeline[] = await getPipelines();
+      setPipelines(pipelines);
     } catch (error) {
       console.error('Error fetching pipelines:', error);
     }
@@ -50,9 +46,8 @@ const LeadsPage: React.FC = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/users');
-      const data: UserApiResponse = await response.json();
-      setUsers(data._embedded.users);
+      const users:User[] = await getUsers();
+      setUsers(users);
     } catch (error) {
       console.error('Error fetching users:', error);
     }

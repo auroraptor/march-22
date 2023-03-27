@@ -36,6 +36,9 @@ export interface Contact {
   phone: string;
   email: string;
   avatar?: string;
+  _embedded: {
+    leads: { id: number }[];
+  };
 }
 
 
@@ -76,6 +79,18 @@ export interface UserApiResponse {
   _links: any;
   _embedded: {
     users: User[];
+  };
+}
+
+export interface ContactsApiResponse {
+  _total_items: number;
+  _links: {
+    self: {
+      href: string;
+    };
+  };
+  _embedded: {
+    contacts: Contact[];
   };
 }
 
